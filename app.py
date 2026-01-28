@@ -9,7 +9,7 @@ st.title("📚 English Phrasal Verbs & Vocabulary")
 # Assumiamo che i file siano phrasal_verbs.csv e words_adjectives.csv con colonne: Italian, English
 phrasal_verbs = pd.read_csv("phrasal_verbs.csv")
 words_adjectives = pd.read_csv("words_adjectives.csv")
-miscellaneous = pd.read_csv("Words2.csv")
+miscellaneous = pd.read_csv("words2.csv")
 
 # ---- Menu con larghezza limitata ----
 menu_container = st.container()
