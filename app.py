@@ -28,7 +28,7 @@ def show_table(df):
     for idx, row in df.iterrows():
         st.write(f"**{row['Italiano']}**")
         # Pulsante per mostrare la traduzione sotto la parola italiana
-        key = f"{idx}-{row['Italian']}"
+        key = f"{idx}-{row['Italiano']}"
         if st.button("▶️ Mostra traduciòn", key=key):
             st.info(row["Espanol"])
 
