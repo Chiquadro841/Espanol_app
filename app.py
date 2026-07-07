@@ -34,7 +34,7 @@ def show_table(df):
 
 # ---- Mostra tabella in base al menu ----
 if menu == "Palabras":
+    show_table(worlds)
+if menu == "Verbos":
     show_table(verbs)
-if menu == "Words & Adjectives":
-    show_table(words)
 
