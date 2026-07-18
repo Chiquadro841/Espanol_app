@@ -6,35 +6,71 @@ st.set_page_config(page_title="Aprendizaje", layout="wide")
 st.title("📚 Palabras y Frases")
 
 # ---- Caricamento CSV ----
-
 verbs = pd.read_csv("verbs.csv")
 words = pd.read_csv("words.csv")
 
-# ---- Menu con larghezza limitata ----
-menu_container = st.container()
-with menu_container:
-    st.markdown(
-        """
-        <style>
-        div.stSelectbox {max-width: 300px;}
-        </style>
-        """, 
-        unsafe_allow_html=True
-    )
-    menu = st.selectbox("Elige la categorìa:", ["Palabras","Verbos"])
+# ---- Menu ----
+menu = st.selectbox(
+    "Elige la categoría:",
+    ["Palabras", "Verbos", "Insertar"]
+)
 
-# ---- Funzione per mostrare tabella con traduzione nascosta ----
+# ---- Funzione per mostrare parole ----
 def show_table(df):
     for idx, row in df.iterrows():
         st.write(f"**{row['Italiano']}**")
-        # Pulsante per mostrare la traduzione sotto la parola italiana
         key = f"{idx}-{row['Italiano']}"
-        if st.button("▶️ Mostra traduciòn", key=key):
+        if st.button("▶️ Mostrar traducción", key=key):
             st.info(row["Espanol"])
 
-# ---- Mostra tabella in base al menu ----
+
+# ---- Funzione inserimento ----
+def insert_word():
+    st.subheader("➕ Insertar nueva palabra")
+
+    categoria = st.radio(
+        "¿Dónde quieres añadirla?",
+        ["Palabras", "Verbos"]
+    )
+
+    italiano = st.text_input("Italiano")
+    espanol = st.text_input("Español")
+
+    if st.button("Guardar"):
+        if italiano and espanol:
+
+            nuova_riga = pd.DataFrame(
+                [{
+                    "Italiano": italiano,
+                    "Espanol": espanol
+                }]
+            )
+
+            if categoria == "Palabras":
+                words = pd.read_csv("words.csv")
+                words = pd.concat([words, nuova_riga], ignore_index=True)
+                words.to_csv("words.csv", index=False)
+
+            else:
+                verbs = pd.read_csv("verbs.csv")
+                verbs = pd.concat([verbs, nuova_riga], ignore_index=True)
+                verbs.to_csv("verbs.csv", index=False)
+
+            st.success(
+                f"✅ '{italiano}' añadido a {categoria}"
+            )
+
+        else:
+            st.warning("Completa los dos campos")
+
+
+# ---- Visualizzazione ----
 if menu == "Palabras":
     show_table(words)
-if menu == "Verbos":
+
+elif menu == "Verbos":
     show_table(verbs)
+
+elif menu == "Insertar":
+    insert_word()
 
